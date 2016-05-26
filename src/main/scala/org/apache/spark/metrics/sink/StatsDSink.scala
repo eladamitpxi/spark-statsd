@@ -2,12 +2,11 @@ package org.apache.spark.metrics.sink
 
 import java.util.Properties
 import java.util.concurrent.TimeUnit
-
 import com.codahale.metrics.{MetricRegistry, MetricFilter}
 import com.readytalk.metrics.StatsDReporter
 import org.apache.spark.SecurityManager
 import org.apache.spark.metrics.MetricsSystem
-import org.apache.spark.metrics.sink.Sink
+
 
 private[spark] class StatsDSink(val property: Properties,
                  val registry: MetricRegistry,
@@ -16,12 +15,16 @@ private[spark] class StatsDSink(val property: Properties,
   val STATSD_DEFAULT_PERIOD = 10
   val STATSD_DEFAULT_UNIT = "SECONDS"
   val STATSD_DEFAULT_PREFIX = ""
+  val STATSD_DEFAULT_REPLACERE = null
+  val STATSD_DEFAULT_REPLACETO = null
 
   val STATSD_KEY_HOST = "host"
   val STATSD_KEY_PORT = "port"
   val STATSD_KEY_PERIOD = "period"
   val STATSD_KEY_UNIT = "unit"
   val STATSD_KEY_PREFIX = "prefix"
+  val STATSD_KEY_REPLACERE = "replaceRe"
+  val STATSD_KEY_REPLACETO = "replaceTo"
 
   def propertyToOption(prop: String): Option[String] = Option(property.getProperty(prop))
 
@@ -49,6 +52,9 @@ private[spark] class StatsDSink(val property: Properties,
   val prefix = propertyToOption(STATSD_KEY_PREFIX).getOrElse(STATSD_DEFAULT_PREFIX)
 
   MetricsSystem.checkMinimalPollingPeriod(pollUnit, pollPeriod)
+
+  val replaceRe = propertyToOption(STATSD_KEY_REPLACERE).getOrElse(STATSD_DEFAULT_REPLACERE)
+  val replaceTo = propertyToOption(STATSD_KEY_REPLACETO).getOrElse(STATSD_DEFAULT_REPLACETO)
 
 
   val reporter = StatsDReporter.forRegistry(registry)
