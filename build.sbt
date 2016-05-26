@@ -17,7 +17,4 @@ spDescription := """Statsd metrics reporter for spark.
                    |Helps spark to push metrics to statsd. See ReadMe for more details""".stripMargin
 
 
-//resolvers += "Bintray" at "https://dl.bintray.com/readytalk/maven"
-//libraryDependencies += "com.readytalk" % "metrics3-statsd" % "4.1.0" % "provided"
-
 assemblyJarName in assembly := s"${name.value}-${version.value}-full.jar"
