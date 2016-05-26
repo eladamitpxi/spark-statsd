@@ -62,6 +62,7 @@ private[spark] class StatsDSink(val property: Properties,
     .convertDurationsTo(TimeUnit.MILLISECONDS)
     .convertRatesTo(TimeUnit.SECONDS)
     .filter(MetricFilter.ALL)
+    .transformNames(replaceRe, replaceTo)
     .build(host, port)
 
   override def start() {
